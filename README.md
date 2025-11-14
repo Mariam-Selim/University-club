@@ -1,6 +1,6 @@
 #University Club – Project Documentation
 
-This repository contains all official documents for the University Club Project, including full system documentation and the final project presentation.
+This repository contains official documents for the University Club Project, including full system documentation and the team info sheet.
 
 Team: The Loop
 Year: 2025
@@ -21,16 +21,3 @@ Student activities
 
 /pres → Final project presentation (PPTX)
 
-## Included Documents
-
-System analysis & requirements
-
-Use case diagrams
-
-ERD (Entity-Relationship Diagram)
-
-System architecture
-
-UI sketches
-
-Final presentation slides
