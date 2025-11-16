@@ -1,23 +1,46 @@
-#University Club – Project Documentation
 
-This repository contains official documents for the University Club Project, including full system documentation and the team info sheet.
+# University Project – Proposal & Team
+ The name: the loop
 
-Team: The Loop
-Year: 2025
 
 ## Project Overview
 
-The University Club is a web platform designed to help students view and share:
+A web platform for students and staff to access university info:
 
-University announcements & events
+- Announcements & events  
 
-Lost and found items
+- Lost & found items  
 
-Student activities
+- Student activities & updates  
 
-## Repository Structure
 
-/docs → Full project documentation (PDF, Word, analysis files)
 
-/pres → Final project presentation (PPTX)
+## Team & Roles
+
+- **Mariam Ahmed / Team Manager**: Backend development + team coordination  
+
+- **Renada Ahmed**: Backend development  
+
+- **Eman Gaber || Ahmed Saad**: Frontend development  
+
+- **Muhammed Abo ALhaggag**: Database management  
+
+- **Mostafa Mahmoud**: Marketing, promotion & data collection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
