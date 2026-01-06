@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AdminStatus {
+  pending
+  approved
+  rejected
+}
+
+model Admin {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String
+  phone         String?
+  password      String
+  status        String         @default("pending")
+  isSuperAdmin  Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Relations
+  createdEvents        Event[]
+  createdAnnouncements Announcement[]
+  createdGalleryPhotos GalleryPhoto[]
+  teamMembers         TeamMember[]
+  contactMessages     ContactMessage[]
+  lostFoundItems      LostAndFound[]
+  adminRequests       AdminRequest[] @relation("RequestedBy")
+  approvedRequests    AdminRequest[] @relation("ApprovedBy")
+
+  @@map("admins")
+}
+
+model Student {
+  id            String                @id @default(cuid())
+  email         String                @unique
+  name          String
+  level         String                // e.g., "Freshman", "Sophomore", "Junior", "Senior"
+  password      String
+  phone         String?
+  googleId      String?               @unique
+  isVerified    Boolean               @default(false)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  // Relations
+  announcements StudentAnnouncement[]
+
+  @@map("students")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  location    String?
+  category    String?  // e.g., "Workshop", "Social", "Academic", "Sports"
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  adminId String
+  admin   Admin  @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("events")
+}
+
+model Announcement {
+  id          String                @id @default(cuid())
+  title       String
+  content     String
+  imageUrl    String?
+  date        DateTime              @default(now())
+  location    String?
+  category    String?               // e.g., "General", "Event", "Important"
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+
+  // Relations
+  adminId     String
+  admin       Admin                 @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  students    StudentAnnouncement[]
+
+  @@map("announcements")
+}
+
+model GalleryPhoto {
+  id          String   @id @default(cuid())
+  imageUrl    String
+  title       String?
+  category    String?  // e.g., "Events", "Team", "General"
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  adminId String
+  admin   Admin  @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("gallery_photos")
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  role        String   // e.g., "President", "Vice President", "Secretary", "Treasurer", "Member"
+  photoUrl    String?
+  bio         String?
+  email       String?
+  phone       String?
+  order       Int      @default(0) // For sorting/ordering team members
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  adminId String
+  admin   Admin  @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("team_members")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  adminId String?
+  admin   Admin? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@map("contact_messages")
+}
+
+model LostAndFound {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("lost") // "lost", "found", "claimed"
+  imageUrl    String?
+  location    String?  // Where it was lost/found
+  contactInfo String?  // Contact info for claiming
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  adminId String
+  admin   Admin  @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("lost_and_found")
+}
+
+model StudentAnnouncement {
+  studentId      String
+  announcementId String
+  joinedAt       DateTime @default(now())
+
+  // Relations
+  student      Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  announcement Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@id([studentId, announcementId])
+  @@map("student_announcements")
+}
+
+model AdminRequest {
+  id          String   @id @default(cuid())
+  email       String
+  name        String
+  phone       String?
+  message     String?  // Optional message from requester
+  status      String   @default("pending") // "pending", "approved", "rejected"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  requestedById String
+  requestedBy   Admin  @relation("RequestedBy", fields: [requestedById], references: [id], onDelete: Cascade)
+
+  approvedById String?
+  approvedBy   Admin?  @relation("ApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  @@map("admin_requests")
+}
+
