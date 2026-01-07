@@ -1,0 +1,21 @@
+/*{
+"inputs": [
+    {
+    "type": "promptString",
+    "id": "raQuTCVJ5wySC2G0vIiyz7PbGY9VhvRDBrd6yPpy",
+    "description": "Back4App personal access token",
+    "password": true
+    }
+],
+"servers": {
+    "back4app": {
+    "command": "npx.cmd",
+    "args": ["-y", "@back4app/mcp-server-back4app@latest"],
+    "env": {
+        "BACK4APP_ACCOUNT_KEY": "${H51GkZEaeH2bDb3TkdvdZ5wLgxoIP4sSJFLYP8Ci}"
+    }
+    }
+}
+}
+Name: "BACK4APP_ACCOUNT_KEY": "${H51GkZEaeH2bDb3TkdvdZ5wLgxoIP4sSJFLYP8Ci}"   Expires: Thu Jan 07 2027
+Key: jZfjpdVXgn6lJrBLVEBu9x7eLX9RjLfIsKTziSO4*/
